@@ -1,1 +1,1 @@
-# Matriz-de-adjac-ncia
+# Matriz-de-adjacncia
