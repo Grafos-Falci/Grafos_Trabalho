@@ -3,7 +3,7 @@ package br.com.davesmartins.grafo_api;
 import br.com.davesmartins.api.Graph;
 import java.util.Scanner;
 
-public class Teste_Grafo_orientado {
+public class Teste_Grafos_SEM_MENU {
 
     public static void main(String[] args) {
         Grafo_Orientado grafo = new Grafo_Orientado();
@@ -28,6 +28,9 @@ public class Teste_Grafo_orientado {
         try {
             Graph.testDotToPng();           
             Graph.createStringDotToPng(grafo.DOT_orientado(), "luisstring.png");
+            Graph.createFileDotToPng("graph/simple.dot", "graph/teste.png");
+          
+            
 
         } catch (Exception e) {
             System.out.println("ERRO");
