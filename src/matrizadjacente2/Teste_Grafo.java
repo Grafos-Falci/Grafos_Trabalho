@@ -107,7 +107,9 @@ public class Teste_Grafo {
                                 System.out.println("Grau: " + grafo.Grau(v));
                                 break;
                             case 3:
-                                System.out.println(grafo.matrizsiples());
+                                System.out.println(grafo.Matriz_adjc());
+                                break;
+                            case 4:
                                 break;
                         }
                     }
