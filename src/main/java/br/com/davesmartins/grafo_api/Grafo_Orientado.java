@@ -1,4 +1,4 @@
-package matrizadjacente2;
+package br.com.davesmartins.grafo_api;
 
 import java.util.ArrayList;
 import java.util.HashSet;

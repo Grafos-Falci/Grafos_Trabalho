@@ -1,5 +1,6 @@
-package matrizadjacente2;
+package br.com.davesmartins.grafo_api;
 
+import br.com.davesmartins.api.Graph;
 import java.util.Scanner;
 
 public class Teste_Grafo_orientado {
@@ -24,8 +25,13 @@ public class Teste_Grafo_orientado {
         grafo.addAresta(a2);
         grafo.addAresta(a3);
       
+        try {
+            Graph.testDotToPng();           
+            Graph.createStringDotToPng(grafo.DOT_orientado(), "luisstring.png");
 
-        System.out.println(grafo.Verifica_conexao());
+        } catch (Exception e) {
+            System.out.println("ERRO");
+        }
     }
 
 }

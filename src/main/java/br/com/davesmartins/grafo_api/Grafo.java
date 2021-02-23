@@ -1,4 +1,4 @@
-package matrizadjacente2;
+package br.com.davesmartins.grafo_api;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -6,8 +6,6 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import javax.swing.JOptionPane;
 
 public class Grafo {
 

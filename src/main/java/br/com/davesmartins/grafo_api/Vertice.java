@@ -1,4 +1,4 @@
-package matrizadjacente2;
+package br.com.davesmartins.grafo_api;
 
 public class Vertice {
 
