@@ -83,5 +83,41 @@ public class Grafo_Orientado extends Grafo {
         return aresta;
     }
 
+    private ArrayList<Vertice> Aresta_vertice(Vertice v) {
+        ArrayList<Aresta> aresta = Busca_aresta(v);
+        ArrayList<Vertice> vertice = new ArrayList<Vertice>();
+        vertice.add(v);
+        controle_vertice.add(v);
+        for (Aresta a : aresta) {
+            if ((a.getV1() == v) && (a.getV2() == v)) {
 
+            } else {
+                if (a.getV1() == v) {
+                    if (!(controle_vertice.contains(a.getV2()))) {
+                        vertice.add(a.getV2());
+                        vertice.addAll(Aresta_vertice(a.getV2()));
+                    } else {
+                        if (!(controle_vertice.contains(a.getV1()))) {
+                            vertice.add(a.getV1());
+                            vertice.addAll(Aresta_vertice(a.getV1()));
+                        }
+                    }
+                }
+            }
+
+        }
+        return vertice;
+    }
+
+    public boolean Verifica_conexao() {
+        controle_vertice.removeAll(controle_vertice);
+        ArrayList<Vertice> vertice = Aresta_vertice(lista_vert.get(0));
+        vertice = new ArrayList<Vertice>(new HashSet<Vertice>(vertice));
+        System.out.println(vertice.size());
+        if (vertice.size() == lista_vert.size()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

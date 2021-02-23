@@ -16,7 +16,7 @@ public class Teste_Grafo_orientado {
         grafo.addVertice(v3);
 
         Aresta a1 = new Aresta(v1, v2);
-        Aresta a2 = new Aresta(v2, v1);
+        Aresta a2 = new Aresta(v2, v3);
         Aresta a3 = new Aresta(v3, v1);
         
 
@@ -25,7 +25,7 @@ public class Teste_Grafo_orientado {
         grafo.addAresta(a3);
       
 
-        
+        System.out.println(grafo.Verifica_conexao());
     }
 
 }
