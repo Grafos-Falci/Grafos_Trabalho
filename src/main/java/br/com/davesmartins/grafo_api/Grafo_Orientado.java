@@ -7,11 +7,12 @@ public class Grafo_Orientado extends Grafo {
 
     private ArrayList<Vertice> controle_vertice = new ArrayList<Vertice>();
 
+
     public String DOT_orientado() {
         String DOT;
         DOT = "digraph{\n";
         for (Aresta aresta : lista_arest) {
-            DOT = DOT + aresta.getV1().getVertice() + " -> " + aresta.getV2().getVertice() + ";\n";
+            DOT = DOT + aresta.getV1().getVertice() + " -> " + aresta.getV2().getVertice() + aresta.getLabel()+ ";\n";
         }
         DOT = DOT + "}";
         return DOT;
@@ -120,4 +121,71 @@ public class Grafo_Orientado extends Grafo {
             return false;
         }
     }
+
+    public void setCorAresta(Vertice v1, Vertice v2) {
+        do {
+            for (Aresta a : lista_arest) {
+                if (a.getV1().equals(v2.getPai()) && a.getV2().equals(v2)) {
+                    a.setCor_seta("red");
+                }
+            }
+            v2 = v2.getPai();
+        } while (v2 != v1);
+    }
+
+    public void dijkstra(Vertice s) {
+        for (Vertice v : lista_vert) {
+            v.setDistancia(Double.POSITIVE_INFINITY);
+            v.setPai(null);
+        }
+
+        s.setDistancia(0);
+        ArrayList<Vertice> S = new ArrayList<Vertice>();
+        ArrayList<Vertice> Q = new ArrayList<Vertice>();
+        Q.addAll(lista_vert);
+
+        while (!Q.isEmpty()) {
+            Vertice u = extrairMinimo(Q);
+            Q.remove(u);
+            S.add(u);
+
+            for (Vertice v : Transitivo_direto(u)) {
+                if (v.getDistancia() > (u.getDistancia() + getPesoAresta(u, v))) {
+                   
+                    v.setDistancia(u.getDistancia() + getPesoAresta(u, v));
+                    v.setPai(u);
+                }
+            }
+        }
+    }
+
+    public double getPesoAresta(Vertice v1, Vertice v2) {
+        if (v1.equals(v2)) {
+            return 0;
+        }
+        for (Aresta aresta : lista_arest) {
+            if (aresta.getV1().equals(v1) && aresta.getV2().equals(v2)) {
+                return aresta.getValor();
+            }
+        }
+        return Double.POSITIVE_INFINITY;
+    }
+
+    public Vertice extrairMinimo(ArrayList<Vertice> list) {
+        
+        Vertice v1 = list.get(0);
+        for (Vertice v : list) {
+            if (v1.getDistancia() > v.getDistancia()) {
+                v1 = v;
+            }
+        }
+        return v1;
+    }
+
+    public double getDistMinVertices(Vertice v1, Vertice v2) {
+        dijkstra(v1);
+        setCorAresta(v1, v2);
+        return v2.getDistancia();
+    }
+
 }
