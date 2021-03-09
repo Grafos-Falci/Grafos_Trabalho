@@ -1,5 +1,6 @@
 package br.com.davesmartins.grafo_api;
 
+import br.com.davesmartins.api.Graph;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -15,59 +16,86 @@ public class Grafo {
     protected ArrayList<Aresta> lista_aresta = new ArrayList<Aresta>();
     protected ArrayList<Vertice> controle_vertice = new ArrayList<Vertice>();
 
+    public ArrayList<Vertice> getLista_vertice() {
+        return lista_vertice;
+    }
+
+    public void setLista_vertice(ArrayList<Vertice> lista_vertice) {
+        this.lista_vertice = lista_vertice;
+    }
+
+    public ArrayList<Aresta> getLista_aresta() {
+        return lista_aresta;
+    }
+
+    public void setLista_aresta(ArrayList<Aresta> lista_aresta) {
+        this.lista_aresta = lista_aresta;
+    }
+
+    public ArrayList<Vertice> getControle_vertice() {
+        return controle_vertice;
+    }
+
+    public void setControle_vertice(ArrayList<Vertice> controle_vertice) {
+        this.controle_vertice = controle_vertice;
+    }
+
     public void addAresta(Aresta a) { // adiciona uma aresta na lista de arestas
         lista_aresta.add(a);
     }
-    	public void inserirAresta(String v1, String v2) { //função lê string de vertice e adiciona na aresta 
-		Vertice vertice1 = null;
-		Vertice vertice2 = null;
 
-		for (Vertice v : lista_vertice) {
-			if (v.getNome().equals(v1)) {
-				vertice1 = v;
-				break;
-			}
-		}
-		for (Vertice v : lista_vertice) {
-			if (v.getNome().equals(v2)) {
-				vertice2 = v;
-				break;
-			}
-		}
-		if (vertice1 != null && vertice2 != null) {
-			addAresta(new Aresta(vertice1, vertice2));
-		} 
-			
-        }
-    	public void inserirArestaValorada(String v1, String v2, double valor) { //função lê string de vertice e valor e adiciona na aresta
-		Vertice vertice1 = null;
-		Vertice vertice2 = null;
+    public void inserirAresta(String v1, String v2) { //função lê string de vertice e adiciona na aresta 
+        Vertice vertice1 = null;
+        Vertice vertice2 = null;
 
-		for (Vertice v : lista_vertice) {
-			if (v.getNome().equals(v1)) {
-				vertice1 = v;
-				break;
-			}
-		}
-		for (Vertice v : lista_vertice) {
-			if (v.getNome().equals(v2)) {
-				vertice2 = v;
-				break;
-			}
-		}
-		if (vertice1 != null && vertice2 != null) {
-			addAresta(new Aresta(vertice1, vertice2, valor));
-		} 			
+        for (Vertice v : lista_vertice) {
+            if (v.getNome().equals(v1)) {
+                vertice1 = v;
+                break;
+            }
         }
-    public Vertice buscaVertice(String nome){ //busca e retorna o objeto através de sua string 
-    for(Vertice v: lista_vertice){
-    if(v.getNome().equals(nome)){
-    return v;
+        for (Vertice v : lista_vertice) {
+            if (v.getNome().equals(v2)) {
+                vertice2 = v;
+                break;
+            }
+        }
+        if (vertice1 != null && vertice2 != null) {
+            addAresta(new Aresta(vertice1, vertice2));
+        }
+
     }
+
+    public void inserirArestaValorada(String v1, String v2, double valor) { //função lê string de vertice e valor e adiciona na aresta
+        Vertice vertice1 = null;
+        Vertice vertice2 = null;
+
+        for (Vertice v : lista_vertice) {
+            if (v.getNome().equals(v1)) {
+                vertice1 = v;
+                break;
+            }
+        }
+        for (Vertice v : lista_vertice) {
+            if (v.getNome().equals(v2)) {
+                vertice2 = v;
+                break;
+            }
+        }
+        if (vertice1 != null && vertice2 != null) {
+            addAresta(new Aresta(vertice1, vertice2, valor));
+        }
     }
-    return null;
+
+    public Vertice buscaVertice(String nome) { //busca e retorna o objeto através de sua string 
+        for (Vertice v : lista_vertice) {
+            if (v.getNome().equals(nome)) {
+                return v;
+            }
+        }
+        return null;
     }
-            
+
     public void addVertice(Vertice v) { //adiciona vertice na lista de vertices
         lista_vertice.add(v);
     }
@@ -101,9 +129,20 @@ public class Grafo {
 
     public String dotSimples() { // grafo em dot
         String DOT;
-        DOT = "grafo{\n";
+        DOT = "graph{\n";
         for (Aresta aresta : lista_aresta) {
             DOT = DOT + aresta.getV1().getNome() + " -- " + aresta.getV2().getNome() + ";\n";
+        }
+        DOT = DOT + "}";
+        return DOT;
+    }
+
+    public String dotSimplesValorado() { // grafo em dot
+        String DOT;
+        DOT = "graph{\n";
+        for (Aresta aresta : lista_aresta) {
+            DOT = DOT + aresta.getV1().getNome() + " -- " + aresta.getV2().getNome() + "[label = \"" + aresta.getDistancia() + "\"];\n";
+
         }
         DOT = DOT + "}";
         return DOT;
@@ -123,6 +162,24 @@ public class Grafo {
             }
         }
         return matriz;
+    }
+
+    public void matrizAdjacencia2() { //imprime a matriz de adjacência
+
+        String matriz = "";
+        for (Vertice linha : lista_vertice) {
+
+            for (Vertice coluna : lista_vertice) {
+                if (verificaAresta(linha, coluna)) {
+                    matriz = matriz + 1;
+                } else {
+                    matriz = matriz + 0;
+                }
+            }
+            matriz = matriz + "\n";
+        }
+        System.out.println(matriz);
+
     }
 
     public boolean verificaAresta(Vertice v1, Vertice v2) { //verifica se os vertices estão conectados
@@ -193,7 +250,7 @@ public class Grafo {
         controle_vertice.removeAll(controle_vertice);
         ArrayList<Vertice> vertice = arestasDoVertice(lista_vertice.get(0));
         vertice = new ArrayList<Vertice>(new HashSet<Vertice>(vertice));
-        System.out.println(vertice.size());
+        System.out.println(vertice.size() + "  " + lista_vertice.size());
         if (vertice.size() == lista_vertice.size()) {
             return true;
         } else {
@@ -201,9 +258,12 @@ public class Grafo {
         }
     }
 
-    public ArrayList<Vertice> arestasDoVertice(Vertice v) { //retorna uma lista de arestas do vertice
+    public ArrayList<Vertice> arestasDoVertice(Vertice v) {
         ArrayList<Aresta> aresta = buscaAresta(v);
         ArrayList<Vertice> vertice = new ArrayList<Vertice>();
+        if (aresta.size() == 0) {
+            return vertice;
+        }
         vertice.add(v);
         controle_vertice.add(v);
         for (Aresta a : aresta) {
@@ -313,8 +373,18 @@ public class Grafo {
                 dot = dot + "[label = \"" + a2.getDistancia() + "\"];\n";
             }
         }
-
         dot = dot + "}";
         return dot;
     }
+
+    public Aresta menoresArestas(ArrayList<Aresta> arestas) { //retorna uma lista de arestas ordenadas pela distancia
+        Aresta aresta = arestas.get(0);
+        for (Aresta a : arestas) {
+            if (aresta.getDistancia() > a.getDistancia()) {
+                aresta = a;
+            }
+        }
+        return aresta;
+    }
+
 }

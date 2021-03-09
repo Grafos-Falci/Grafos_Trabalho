@@ -199,7 +199,7 @@ public class TesteMenu {
 
                 case 3:
                     int op3 = 0;
-                    while (op != 13) {
+                    while (op != 14) {
                         System.out.println("---------------Matriz---------------");
                         System.out.println("1 - Mostrar Ordem");
                         System.out.println("2 - Mostrar Grau");
@@ -213,7 +213,8 @@ public class TesteMenu {
                         System.out.println("10 -Mostrar conexidade");
                         System.out.println("11 -Gerar menor caminho (orientado)");
                         System.out.println("12 -Gerar menor caminho (nao orientado)");
-                        System.out.println("13 - Sair");
+                        //System.out.println("13 -Gerar imagem da arvore (Kruskal)"); //fazer ainda
+                        System.out.println("14 - Sair");
                         op3 = leitor.nextInt();
 
                         switch (op3) {
@@ -287,6 +288,8 @@ public class TesteMenu {
                                 System.out.println(grafo.Dijikstra(grafo.buscaVertice(v1), grafo.buscaVertice(v2)));
                                 Graph.createStringDotToPng(grafo.Dijikstra(grafo.buscaVertice(v1), grafo.buscaVertice(v2)), "naoOrientadoDistancia.png");
                                 break;
+                                
+
 
                         }
                     }

@@ -7,6 +7,8 @@ public class Vertice {
     private Vertice pai;
     private Aresta arestaPai; 
     private double distance = Double.POSITIVE_INFINITY; //distancia do vertice ao vértice origem
+    private int grupo;
+    
     
     Vertice(String vertice) {
         this.nome = vertice;
@@ -50,6 +52,14 @@ public class Vertice {
 
     public void setArestaPai(Aresta arestaPai) {
         this.arestaPai = arestaPai;
+    }
+
+    public int getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(int grupo) {
+        this.grupo = grupo;
     }
     
 

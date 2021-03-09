@@ -35,10 +35,6 @@ public class TesteSemMenu {
         grafo.addAresta(a3);
         grafo.addAresta(a4);
         grafo.addAresta(a5);
-        
-        System.out.println(grafo.Dijikstra(v1, v5));
-        Graph.createStringDotToPng(grafo.Dijikstra(v1, v5), "luis.png");
-        System.out.println("menor dist "+v5.getDistance());
-      
+
     }
 }
