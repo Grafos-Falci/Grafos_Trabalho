@@ -20,8 +20,14 @@ public class TesteMenu {
             System.out.println("2 - Ler/Gravar Arquivo");
             System.out.println("3 - Mostrar Dados do Grafo");
             System.out.println("4 - Sair");
-
             op = leitor.nextInt();
+
+            Aresta a;
+            String v1;
+            String v2;
+            Vertice vert1;
+            Vertice vert2;
+            double valor;
 
             switch (op) {
 
@@ -33,7 +39,9 @@ public class TesteMenu {
                         System.out.println("2 - Montar Grafo Orientado");
                         System.out.println("3 - Sair");
                         op1 = leitor.nextInt();
+
                         switch (op1) {
+
                             case 1:
                                 int op11 = 0;
                                 while (op11 != 4) {
@@ -41,41 +49,39 @@ public class TesteMenu {
                                     System.out.println("---------------Operacoes---------------");
                                     System.out.println("1 - Inserir Vertice");
                                     System.out.println("2 - Inserir Aresta");
-                                    System.out.println("3 - Inserir Aresta(Valorada)");
+                                    System.out.println("3 - Inserir Aresta valorada");
                                     System.out.println("4 - Sair");
                                     op11 = leitor.nextInt();
 
                                     switch (op11) {
                                         case 1:
                                             System.out.println("Vertice: ");
-                                            String v = leitor.next();
-                                            Vertice vertice = new Vertice(v);
-                                            grafo.addVertice(vertice);
+                                            v1 = leitor.next();
+                                            vert1 = new Vertice(v1);
+                                            grafo.addVertice(vert1);
                                             break;
                                         case 2:
                                             System.out.println("Vertice 1: ");
-                                            String v1 = leitor.next();
-                                            Vertice vertice1 = new Vertice(v1);
+                                            v1 = leitor.next();
+                                            vert1 = new Vertice(v1);
 
                                             System.out.println("Vertice 2: ");
-                                            String v2 = leitor.next();
-                                            Vertice vertice2 = new Vertice(v2);
-                                            Aresta aresta = new Aresta(vertice1, vertice2);
-                                            grafo.addAresta(aresta);
+                                            v2 = leitor.next();
+                                            vert2 = new Vertice(v2);
+                                            grafo.inserirAresta(v1, v2);
                                             break;
                                         case 3:
                                             System.out.println("Vertice 1: ");
                                             v1 = leitor.next();
-                                            Vertice vertice3 = new Vertice(v1);
+                                            vert1 = new Vertice(v1);
 
                                             System.out.println("Vertice 2: ");
                                             v2 = leitor.next();
-                                            Vertice vertice4 = new Vertice(v2);
+                                            vert2 = new Vertice(v2);
 
                                             System.out.println("Insira o valor da Aresta: ");
-                                            double valor = leitor.nextDouble();
-                                            Aresta aresta1 = new Aresta(vertice3, vertice4, valor);
-                                            grafo.addAresta(aresta1);
+                                            valor = leitor.nextDouble();
+                                            grafo.inserirArestaValorada(v1, v2, valor);
                                             break;
                                     }
                                 }
@@ -95,37 +101,35 @@ public class TesteMenu {
                                     switch (op12) {
                                         case 1:
                                             System.out.println("Vertice: ");
-                                            String v = leitor.next();
-                                            Vertice vertice = new Vertice(v);
-                                            grafo_orientado.addVertice(vertice);
+                                            v1 = leitor.next();
+                                            vert1 = new Vertice(v1);
+                                            grafo_orientado.addVertice(vert1);
                                             break;
                                         case 2:
                                             System.out.println("Vertice de origem: ");
-                                            String v1 = leitor.next();
-                                            Vertice vertice1 = new Vertice(v1);
+                                            v1 = leitor.next();
+                                            vert1 = new Vertice(v1);
 
-                                            System.out.println("Vertice de chegada: ");
-                                            String v2 = leitor.next();
-                                            Vertice vertice2 = new Vertice(v2);
-                                            Aresta aresta = new Aresta(vertice1, vertice2);
-                                            grafo_orientado.addAresta(aresta);
+                                            System.out.println("Vertice de destino: ");
+                                            v2 = leitor.next();
+                                            vert2 = new Vertice(v2);
+                                            grafo_orientado.inserirAresta(v1, v2);
                                             break;
                                         case 3:
                                             System.out.println("Vertice 1: ");
                                             v1 = leitor.next();
-                                            Vertice vertice3 = new Vertice(v1);
+                                            vert1 = new Vertice(v1);
 
                                             System.out.println("Vertice 2: ");
                                             v2 = leitor.next();
-                                            Vertice vertice4 = new Vertice(v2);
+                                            vert2 = new Vertice(v2);
 
                                             System.out.println("Insira o valor da Aresta: ");
-                                            double valor = leitor.nextDouble();
-                                            Aresta aresta1 = new Aresta(vertice3, vertice4, valor);
-                                            grafo.addAresta(aresta1);
+                                            valor = leitor.nextDouble();
+                                            grafo_orientado.inserirArestaValorada(v1, v2, valor);
                                             break;
                                     }
-                                    break;
+
                                 }
 
                                 break;
@@ -151,12 +155,12 @@ public class TesteMenu {
                             case 1:
                                 System.out.println("Informe o nome do arquivo para criar: ");
                                 String nome = leitor.next();
-                                grafo.Gravar_arquivo(nome);
+                                grafo.gravarArquivo(nome);
                                 break;
                             case 2:
                                 System.out.println("Informe o nome do arquivo para criar: ");
                                 nome = leitor.next();
-                                grafo.Ler_arquivo(nome);
+                                grafo.lerArquivo(nome);
                                 break;
                             case 3:
                                 System.out.println("Informe o nome do arquivo a ser lido: ");
@@ -195,7 +199,7 @@ public class TesteMenu {
 
                 case 3:
                     int op3 = 0;
-                    while (op != 12) {
+                    while (op != 13) {
                         System.out.println("---------------Matriz---------------");
                         System.out.println("1 - Mostrar Ordem");
                         System.out.println("2 - Mostrar Grau");
@@ -222,16 +226,16 @@ public class TesteMenu {
                                 System.out.println("Grau: " + grafo.Grau(v));
                                 break;
                             case 3:
-                                System.out.println(grafo.Matriz_adjc());
+                                System.out.println(grafo.matrizAdjacencia());
                                 break;
                             case 4:
-                                System.out.println(grafo.DOT_simples());
+                                System.out.println(grafo.dotSimples());
                                 break;
                             case 5:
-                                System.out.println(grafo_orientado.DOT_orientado());
+                                System.out.println(grafo_orientado.dotOrientado());
                                 break;
                             case 6:
-                                if (grafo.Grafo_regular()) {
+                                if (grafo.grafoRegular()) {
                                     System.out.println("Regular");
                                 } else {
                                     System.out.println("Nao Regular");
@@ -246,18 +250,17 @@ public class TesteMenu {
                                 break;
                             case 8:
                                 System.out.println("Fecho Transitivo Direto(Informe o Vertice): ");
-                                v = leitor.next();
-                                Vertice vertice_ftd = new Vertice(v);
-                                grafo_orientado.Busca_TD(vertice_ftd);
+                                v1 = leitor.next();
+                                Vertice vertice_ftd = new Vertice(v1);
+                                grafo_orientado.buscaTD(vertice_ftd);
                                 break;
                             case 9:
                                 System.out.println("Fecho Transitivo Inverso(Informe o Vertice): ");
-                                v = leitor.next();
-                                Vertice vertice_fti = new Vertice(v);
-                                grafo_orientado.Busca_TD(vertice_fti);
+                                v1 = leitor.next();
+                                grafo_orientado.buscaTD(grafo_orientado.buscaVertice(v1));
                                 break;
                             case 10:
-                                if (grafo_orientado.Verifica_conexao()) {
+                                if (grafo_orientado.grafoConexo()) {
                                     System.out.println("Conexo");
                                 } else {
                                     System.out.println("Nao Conexo");
@@ -265,35 +268,25 @@ public class TesteMenu {
                                 break;
                             case 11:
                                 System.out.println("Informe o vertice de origem");
-                                String v1 = leitor.next();
-                                Vertice vert1 = new Vertice(v1);
+                                v1 = leitor.next();
 
                                 System.out.println("Informe o vertice de destino");
-                                String v2 = leitor.next();
-                                Vertice vert2 = new Vertice(v2);
+                                v2 = leitor.next();
 
-                                System.out.println("Ditancia menor caminho = " + grafo_orientado.getDistMinVertices(vert1, vert2));
-                                System.out.println(grafo_orientado.DOT_orientado());
-                                System.out.println(grafo_orientado.getDistMinVertices(vert1, vert2));
-                                Graph.createStringDotToPng(grafo_orientado.DOT_orientado(), "orientadoDistancia.png");
-
+                                System.out.println(grafo_orientado.Dijikstra(grafo_orientado.buscaVertice(v1), grafo_orientado.buscaVertice(v2)));
+                                Graph.createStringDotToPng(grafo_orientado.Dijikstra(grafo_orientado.buscaVertice(v1), grafo_orientado.buscaVertice(v2)), "naoOrientadoDistancia.png");
                                 break;
 
                             case 12:
                                 System.out.println("Informe o vertice de origem");
-                                String v3 = leitor.next();
-                                Vertice vert3 = new Vertice(v3);
+                                v1 = leitor.next();
 
                                 System.out.println("Informe o vertice de destino");
-                                String v4 = leitor.next();
-                                Vertice vert4 = new Vertice(v4);
+                                v2 = leitor.next();
 
-                                System.out.println("Ditancia menor caminho = " + grafo_orientado.getDistMinVertices(vert3, vert4));
-                                System.out.println(grafo.DOT_simples());
-                                System.out.println(grafo.getDistMinVertices(vert3, vert4));
-                                Graph.createStringDotToPng(grafo.DOT_simples(), "orientadoDistancia.png");
+                                System.out.println(grafo.Dijikstra(grafo.buscaVertice(v1), grafo.buscaVertice(v2)));
+                                Graph.createStringDotToPng(grafo.Dijikstra(grafo.buscaVertice(v1), grafo.buscaVertice(v2)), "naoOrientadoDistancia.png");
                                 break;
-
 
                         }
                     }

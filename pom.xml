@@ -25,5 +25,5 @@
             <url>https://gitlab.com/api/v4/groups/7921849/-/packages/maven</url>
         </repository>
     </repositories>
-    
+    <name>matrizAdjacente</name>
 </project>

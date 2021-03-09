@@ -3,67 +3,142 @@ package br.com.davesmartins.grafo_api;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 
 public class Grafo {
 
-    protected ArrayList<Vertice> lista_vert = new ArrayList<Vertice>();
-    protected ArrayList<Aresta> lista_arest = new ArrayList<Aresta>();
-    private ArrayList<Vertice> controle_vertice = new ArrayList<Vertice>();
+    protected ArrayList<Vertice> lista_vertice = new ArrayList<Vertice>();
+    protected ArrayList<Aresta> lista_aresta = new ArrayList<Aresta>();
+    protected ArrayList<Vertice> controle_vertice = new ArrayList<Vertice>();
 
-    public void addAresta(Aresta a) {
-        lista_arest.add(a);
+    public void addAresta(Aresta a) { // adiciona uma aresta na lista de arestas
+        lista_aresta.add(a);
     }
+    	public void inserirAresta(String v1, String v2) { //função lê string de vertice e adiciona na aresta 
+		Vertice vertice1 = null;
+		Vertice vertice2 = null;
 
-    public void addVertice(Vertice v) {
-        lista_vert.add(v);
-    }
-
-    public int Ordem() {
-        return lista_vert.size();
-    }
-
-    public int Grau(String v) {
-        int cont = 0;
-        for (Aresta a : lista_arest) {
-            if (v.equals(a.getV1().getVertice()) || v.equals(a.getV2().getVertice())) {
-                cont++;
-            }
+		for (Vertice v : lista_vertice) {
+			if (v.getNome().equals(v1)) {
+				vertice1 = v;
+				break;
+			}
+		}
+		for (Vertice v : lista_vertice) {
+			if (v.getNome().equals(v2)) {
+				vertice2 = v;
+				break;
+			}
+		}
+		if (vertice1 != null && vertice2 != null) {
+			addAresta(new Aresta(vertice1, vertice2));
+		} 
+			
         }
-        return cont;
+    	public void inserirArestaValorada(String v1, String v2, double valor) { //função lê string de vertice e valor e adiciona na aresta
+		Vertice vertice1 = null;
+		Vertice vertice2 = null;
+
+		for (Vertice v : lista_vertice) {
+			if (v.getNome().equals(v1)) {
+				vertice1 = v;
+				break;
+			}
+		}
+		for (Vertice v : lista_vertice) {
+			if (v.getNome().equals(v2)) {
+				vertice2 = v;
+				break;
+			}
+		}
+		if (vertice1 != null && vertice2 != null) {
+			addAresta(new Aresta(vertice1, vertice2, valor));
+		} 			
+        }
+    public Vertice buscaVertice(String nome){ //busca e retorna o objeto através de sua string 
+    for(Vertice v: lista_vertice){
+    if(v.getNome().equals(nome)){
+    return v;
+    }
+    }
+    return null;
+    }
+            
+    public void addVertice(Vertice v) { //adiciona vertice na lista de vertices
+        lista_vertice.add(v);
     }
 
     public void removeAresta(Aresta a) {
-        lista_arest.remove(a);
+        lista_aresta.remove(a);
     }
 
     public void removeVertice(Vertice v) {
-        for (Aresta a : lista_arest) {
-            if (a.getV1() == v || a.getV2() == v) {
+        for (Aresta a : lista_aresta) {
+            if (a.getV1() == v || a.getV2() == v) { //se a aresta for do vertice, deletamos ela
                 this.removeAresta(a);
             }
         }
-        lista_vert.remove(v);
+        lista_vertice.remove(v);    //por fim removemos o vertice da lista
     }
 
-    public String DOT_simples() {
+    public int Ordem() {    //calcula a ordem (numero de vertices) do grafo 
+        return lista_vertice.size();
+    }
+
+    public int Grau(String v) {
+        int grau = 0;
+        for (Aresta a : lista_aresta) { //percorremos a lista de aresta
+            if (v.equals(a.getV1().getNome()) || v.equals(a.getV2().getNome())) { //se o vertice contem a aresta o grau aumenta 
+                grau++;
+            }
+        }
+        return grau;
+    }
+
+    public String dotSimples() { // grafo em dot
         String DOT;
-        DOT = "graph{\n";
-        for (Aresta aresta : lista_arest) {
-            DOT = DOT + aresta.getV1().getVertice() + " -- " + aresta.getV2().getVertice() + aresta.getLabel() + ";\n";
+        DOT = "grafo{\n";
+        for (Aresta aresta : lista_aresta) {
+            DOT = DOT + aresta.getV1().getNome() + " -- " + aresta.getV2().getNome() + ";\n";
         }
         DOT = DOT + "}";
         return DOT;
     }
 
-    public String Gravar_arquivo(String nome) {
+    public int[][] matrizAdjacencia() { //imprime a matriz de adjacência
+
+        int matriz[][] = new int[lista_vertice.size()][lista_vertice.size()];
+        for (Vertice linha : lista_vertice) {
+
+            for (Vertice coluna : lista_vertice) {
+                if (verificaAresta(linha, coluna)) {
+                    matriz[lista_vertice.indexOf(linha)][lista_vertice.indexOf(coluna)] = 1;
+                } else {
+                    matriz[lista_vertice.indexOf(linha)][lista_vertice.indexOf(coluna)] = 0;
+                }
+            }
+        }
+        return matriz;
+    }
+
+    public boolean verificaAresta(Vertice v1, Vertice v2) { //verifica se os vertices estão conectados
+        for (Aresta a : lista_aresta) {
+            if ((a.getV1() == v1 && a.getV2() == v2) || (a.getV1() == v2 && a.getV2() == v1)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public String gravarArquivo(String nome) { //grava em forma de arquivo o nosso dot
 
         try (FileWriter fw = new FileWriter(nome + ".txt")) {
             BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(DOT_simples());
+            bw.write(dotSimples());
             bw.flush();
             System.out.println("Gravacao realizada com sucesso");
         } catch (IOException ex) {
@@ -72,7 +147,7 @@ public class Grafo {
         return null;
     }
 
-    public String Ler_arquivo(String nome) {
+    public String lerArquivo(String nome) { //lê um arquivo de texto que contenha um dot
 
         try (FileReader fr = new FileReader(nome + ".txt")) {
             BufferedReader br = new BufferedReader(fr);
@@ -86,47 +161,21 @@ public class Grafo {
         return null;
     }
 
-    public boolean verificaAresta(Vertice v1, Vertice v2) {
-        for (Aresta a : lista_arest) {
-            if ((a.getV1() == v1 && a.getV2() == v2) || (a.getV1() == v2 && a.getV2() == v1)) {
-                return true;
-            }
-        }
-        return false;
-    }
+    public boolean grafoRegular() { //verifica se ografo é regular
 
-    public boolean Grafo_regular() {
-
-        int grauReferencia = Grau(lista_vert.get(0).getVertice());
-        for (Vertice v : lista_vert) {
-
-            if (grauReferencia != Grau(v.getVertice())) {
+        int grauReferencia = Grau(lista_vertice.get(0).getNome());
+        for (Vertice v : lista_vertice) {
+            if (grauReferencia != Grau(v.getNome())) {
                 return false;
             }
         }
         return true;
     }
 
-    public int[][] Matriz_adjc() {
-
-        int matriz[][] = new int[lista_vert.size()][lista_vert.size()];
-        for (Vertice linha : lista_vert) {
-
-            for (Vertice coluna : lista_vert) {
-                if (verificaAresta(linha, coluna)) {
-                    matriz[lista_vert.indexOf(linha)][lista_vert.indexOf(coluna)] = 1;
-                } else {
-                    matriz[lista_vert.indexOf(linha)][lista_vert.indexOf(coluna)] = 0;
-                }
-            }
-        }
-        return matriz;
-    }
-
-    public boolean Grafo_completo() {
-        int matriz[][] = Matriz_adjc();
-        for (int linha = 0; linha < lista_vert.size(); linha++) {
-            for (int coluna = 0; coluna < lista_vert.size(); coluna++) {
+    public boolean Grafo_completo() { //verifica se o grafo é completo
+        int matriz[][] = matrizAdjacencia();
+        for (int linha = 0; linha < lista_vertice.size(); linha++) {
+            for (int coluna = 0; coluna < lista_vertice.size(); coluna++) {
                 if (linha == coluna && matriz[linha][coluna] != 0) {
                     return false;
                 } else {
@@ -136,52 +185,24 @@ public class Grafo {
                 }
             }
         }
+
         return true;
     }
 
-
-
-    public ArrayList<Aresta> Busca_todos(Vertice v1) {
-        ArrayList<Aresta> aresta = new ArrayList<Aresta>();
-        for (Aresta a : lista_arest) {
-            if (a.getV1() == v1 || a.getV2() == v1) {
-                aresta.add(a);
-            }
+    public boolean grafoConexo() { //verifica se o grafo é conexo
+        controle_vertice.removeAll(controle_vertice);
+        ArrayList<Vertice> vertice = arestasDoVertice(lista_vertice.get(0));
+        vertice = new ArrayList<Vertice>(new HashSet<Vertice>(vertice));
+        System.out.println(vertice.size());
+        if (vertice.size() == lista_vertice.size()) {
+            return true;
+        } else {
+            return false;
         }
-        return aresta;
     }
 
-    public ArrayList<Vertice> ListaConexaoAresta(Vertice v) {
-        controle_vertice.add(v);
-        ArrayList<Vertice> vertice = new ArrayList<Vertice>();
-        ArrayList<Aresta> aresta = Busca_todos(v);
-        for (Aresta a : aresta) {
-            Vertice vertref;
-            if(v == a.getV2()){
-            vertref = a.getV1();
-            }else{
-            vertref = a.getV2();
-            }
-            vertice.add(vertref);
-            if (!(controle_vertice.contains(vertref))) {
-                vertice.addAll(ListaConexaoAresta(vertref));
-            }
-        }
-        return vertice;
-    }
-
-    public ArrayList<Aresta> Busca_aresta(Vertice v) {
-        ArrayList<Aresta> aresta = new ArrayList<Aresta>();
-        for (Aresta a : lista_arest) {
-            if (a.getV1() == v || a.getV2() == v) {
-                aresta.add(a);
-            }
-        }
-        return aresta;
-    }
-
-    public ArrayList<Vertice> Aresta_vertice(Vertice v) {
-        ArrayList<Aresta> aresta = Busca_aresta(v);
+    public ArrayList<Vertice> arestasDoVertice(Vertice v) { //retorna uma lista de arestas do vertice
+        ArrayList<Aresta> aresta = buscaAresta(v);
         ArrayList<Vertice> vertice = new ArrayList<Vertice>();
         vertice.add(v);
         controle_vertice.add(v);
@@ -192,11 +213,11 @@ public class Grafo {
                 if (a.getV1() == v) {
                     if (!(controle_vertice.contains(a.getV2()))) {
                         vertice.add(a.getV2());
-                        vertice.addAll(Aresta_vertice(a.getV2()));
+                        vertice.addAll(arestasDoVertice(a.getV2())); //recursividade (chama a própria função)
                     } else {
                         if (!(controle_vertice.contains(a.getV1()))) {
                             vertice.add(a.getV1());
-                            vertice.addAll(Aresta_vertice(a.getV1()));
+                            vertice.addAll(arestasDoVertice(a.getV1()));
                         }
                     }
                 }
@@ -206,84 +227,94 @@ public class Grafo {
         return vertice;
     }
 
-    public boolean Verifica_conexao() {
-        controle_vertice.removeAll(controle_vertice);
-        ArrayList<Vertice> vertice = Aresta_vertice(lista_vert.get(0));
-        vertice = new ArrayList<Vertice>(new HashSet<Vertice>(vertice));
-        System.out.println(vertice.size());
-        if (vertice.size() == lista_vert.size()) {
-            return true;
-        } else {
-            return false;
+    public ArrayList<Aresta> buscaAresta(Vertice v) { // retorna a lista de arestas de um vertice
+        ArrayList<Aresta> aresta = new ArrayList<Aresta>();
+        for (Aresta a : lista_aresta) {
+            if (a.getV1() == v || a.getV2() == v) {
+                aresta.add(a);
+            }
         }
+        return aresta;
     }
-        public void setCorAresta(Vertice v1, Vertice v2) {
-        do {
-            for (Aresta a : lista_arest) {
-                if (a.getV1().equals(v2.getPai()) && a.getV2().equals(v2)) {
-                    a.setCor_seta("red");
+
+    public double distancia(Aresta a) { //retorna a distancia/valor da aresta
+        if (a == null) {
+            return Double.POSITIVE_INFINITY;
+        }
+        if (a.getDistancia() == 0) {
+            return 1;
+        }
+        return a.getDistancia();
+    }
+
+    public ArrayList<Vertice> menorCaminho(Vertice origem, Vertice destino) { //retorna a lista com o menor caminho de vertices 
+        ArrayList<Vertice> abertos = new ArrayList<Vertice>();
+        origem.setDistance(0);
+        abertos.add(origem);
+        while (!abertos.isEmpty()) {
+            Vertice v1 = abertos.get(0);
+            for (Aresta a : buscaAresta(v1)) {
+                Vertice v2;
+                if (a.getV1() == v1) {
+                    v2 = a.getV2();
+                } else {
+                    v2 = a.getV1();
+                }
+                double custo = distancia(a);
+                double distanciaMinima = custo + v1.getDistance();
+                if (distanciaMinima < v2.getDistance()) {
+                    abertos.remove(v2);
+                    v2.setDistance(distanciaMinima);
+                    v2.setPai(v1);
+                    v2.setArestaPai(a);
+                    abertos.add(v2);
                 }
             }
-            v2 = v2.getPai();
-        } while (v2 != v1);
-    }
-    
-
-    public void dijkstra(Vertice s) {
-        for (Vertice v : lista_vert) {
-            v.setDistancia(Double.POSITIVE_INFINITY);
-            v.setPai(null);
+            abertos.remove(0);
         }
+        ArrayList<Vertice> ordemVertices = new ArrayList<Vertice>();
+        for (Vertice ref = destino; ref != null; ref = ref.getPai()) { //pegar do destino e voltar para a origem
+            ordemVertices.add(ref);
+        }
+        Collections.reverse(ordemVertices);
+        return ordemVertices;
+    }
 
-        s.setDistancia(0);
-        ArrayList<Vertice> S = new ArrayList<Vertice>();
-        ArrayList<Vertice> Q = new ArrayList<Vertice>();
-        Q.addAll(lista_vert);
+    public String Dijikstra(Vertice origem, Vertice destino) { //mostra via dot o menor arquivo
+        ArrayList<Vertice> menor = menorCaminho(origem, destino);
+        ArrayList<Aresta> caminhos = new ArrayList<Aresta>();
+        ArrayList<Aresta> outros = new ArrayList<Aresta>();
 
-        while (!Q.isEmpty()) {
-            Vertice u = extrairMinimo(Q);
-            Q.remove(u);
-            S.add(u);
+        for (int i = 0; i < menor.size(); i++) {
+            if (i == (menor.size() - 1)) {
+                break;
+            }
+            caminhos.add(menor.get(i + 1).getArestaPai());
+        }
+        outros.addAll(lista_aresta);
+        outros.removeAll(caminhos);
 
-            for (Vertice v : ListaConexaoAresta(u)) {
-                
-                    if (v.getDistancia() > (u.getDistancia() + getPesoAresta(u, v))) {
+        String dot = "graph{\n";
 
-                        v.setDistancia(u.getDistancia() + getPesoAresta(u, v));
-                        v.setPai(u);
-                    }
-                
+        for (Aresta a1 : caminhos) {
+            dot = dot + a1.getV1().getNome() + "--" + a1.getV2().getNome();
+            if (a1.getDistancia() == 0) {
+                dot = dot + a1.getV1().getNome() + "--" + a1.getV2().getNome() + "[color = red];\n";
 
+            } else {
+                dot = dot + "[label = \"" + a1.getDistancia() + "\"][color = red];\n";
             }
         }
-    }
-
-    public double getPesoAresta(Vertice v1, Vertice v2) {
-        if (v1.equals(v2)) {
-            return 0;
-        }
-        for (Aresta aresta : lista_arest) {
-            if (aresta.getV1().equals(v1) && aresta.getV2().equals(v2)) {
-                return aresta.getValor();
+        for (Aresta a2 : outros) {
+            dot = dot + a2.getV1().getNome() + "--" + a2.getV2().getNome();
+            if (a2.getDistancia() == 0) {
+                dot = dot + a2.getV1().getNome() + "--" + a2.getV2().getNome() + ";\n";
+            } else {
+                dot = dot + "[label = \"" + a2.getDistancia() + "\"];\n";
             }
         }
-        return Double.POSITIVE_INFINITY;
-    }
 
-    public Vertice extrairMinimo(ArrayList<Vertice> list) {
-
-        Vertice v1 = list.get(0);
-        for (Vertice v : list) {
-            if (v1.getDistancia() > v.getDistancia()) {
-                v1 = v;
-            }
-        }
-        return v1;
-    }
-
-    public double getDistMinVertices(Vertice v1, Vertice v2) {
-        dijkstra(v1);
-        setCorAresta(v1, v2);
-        return v2.getDistancia();
+        dot = dot + "}";
+        return dot;
     }
 }

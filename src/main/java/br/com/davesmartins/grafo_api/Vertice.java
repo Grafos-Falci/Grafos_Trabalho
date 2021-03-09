@@ -2,40 +2,30 @@ package br.com.davesmartins.grafo_api;
 
 public class Vertice {
 
-    private String vertice;
-    private double distancia;
- 
+    private String nome;
+    private int quantidade_aresta; //quantidade de arestas que o vertie possui
     private Vertice pai;
-
-    private int q_aresta;
-
-    Vertice(String v) {
-        this.vertice = v;
-
+    private Aresta arestaPai; 
+    private double distance = Double.POSITIVE_INFINITY; //distancia do vertice ao vértice origem
+    
+    Vertice(String vertice) {
+        this.nome = vertice;
     }
 
-    public String getVertice() {
-        return vertice;
+    public String getNome() {
+        return nome;
     }
 
-    public void setVertice(String vertice) {
-        this.vertice = vertice;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public int getQ_aresta() {
-        return q_aresta;
+    public int getQuantidade_aresta() {
+        return quantidade_aresta;
     }
 
-    public void setQ_aresta(int q_aresta) {
-        this.q_aresta = q_aresta;
-    }
-
-    public double getDistancia() {
-        return distancia;
-    }
-
-    public void setDistancia(double distancia) {
-        this.distancia = distancia;
+    public void setQuantidade_aresta(int quantidade_aresta) {
+        this.quantidade_aresta = quantidade_aresta;
     }
 
     public Vertice getPai() {
@@ -45,5 +35,22 @@ public class Vertice {
     public void setPai(Vertice pai) {
         this.pai = pai;
     }
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
+
+    public Aresta getArestaPai() {
+        return arestaPai;
+    }
+
+    public void setArestaPai(Aresta arestaPai) {
+        this.arestaPai = arestaPai;
+    }
     
+
 }

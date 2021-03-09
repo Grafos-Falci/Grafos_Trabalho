@@ -4,19 +4,19 @@ public class Aresta {
 
     private Vertice v1;
     private Vertice v2;
-    private double valor;
-    String cor_seta;
+    private double distancia=1; //valor da aresta
 
-    public Aresta(Vertice v1, Vertice v2) {
+
+    public Aresta(Vertice v1, Vertice v2, double distancia) { //construtor com valor 
         this.v1 = v1;
         this.v2 = v2;
+        this.distancia = distancia;
     }
-    public Aresta(Vertice v1, Vertice v2, double valor) {
+    public Aresta(Vertice v1, Vertice v2) { //construtor sem valor 
         this.v1 = v1;
-        this.v2 = v2;
-        this.valor = valor;
+        this.v2 = v2; 
     }
-    
+
     public Vertice getV1() {
         return v1;
     }
@@ -33,27 +33,12 @@ public class Aresta {
         this.v2 = v2;
     }
 
-    public double getValor() {
-        return valor;
+    public double getDistancia() {
+        return distancia;
     }
 
-    public void setValor(double valor) {
-        this.valor = valor;
+    public void setDistancia(double distancia) {
+        this.distancia = distancia;
     }
-
-    public String getLabel() {
-        if(this.valor == 0){
-        return "";
-        }else{
-            return "[label=" + this.valor + ",weight=" + this.valor + ",color=" + this.cor_seta + "]";
-        }    
-    }
-
-    public String getCor_seta() {
-        return cor_seta;
-    }
-
-    public void setCor_seta(String cor_seta) {
-        this.cor_seta = cor_seta;
-    }    
+    
 }
